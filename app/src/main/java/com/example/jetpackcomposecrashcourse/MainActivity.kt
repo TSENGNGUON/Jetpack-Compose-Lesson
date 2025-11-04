@@ -5,13 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
@@ -30,18 +36,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            Row(
+            Column(
                 modifier = Modifier
                     .systemBarsPadding()
-                    .width(300.dp)
-                    .fillMaxHeight(0.7f)
-                    .background(Color.Green),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment =  Alignment.CenterVertically
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .background(Color.Green)
+                    .border(5.dp, Color.Magenta)
+                    .padding(5.dp)
+                    .border(5.dp, Color.Blue)
+                    .padding(5.dp)
+                    .border(10.dp, Color.Yellow)
+
             ) {
-                Text("Hello")
+                Text("Hello",
+                    modifier = Modifier.clickable{})
+                Spacer(modifier = Modifier.height(50.dp))
                 Text("World")
-                Text("Hello")
             }
 
         }

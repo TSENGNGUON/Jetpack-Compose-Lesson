@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -59,6 +60,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import com.example.jetpackcomposecrashcourse.ui.theme.JetPackComposeCrashCourseTheme
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -68,41 +73,36 @@ import kotlin.random.Random
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val constraints = ConstraintSet{
+                val blueBox = createRefFor("bluebox")
+                val redBox = createRefFor("redBox")
+                val guideLine = createGuidelineFromTop(0.5f)
 
-            LazyColumn(
-
-            ) {
-                itemsIndexed(
-                    listOf("This", "is", "Jetpack", "Compose")
-                ){index , string ->
-                    Text(
-                        text = string,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 24.dp)
-
-                    )
-
+                constrain(blueBox){
+                    top.linkTo(guideLine)
+                    start.linkTo(parent.start)
+                    width = Dimension.value(100.dp)
+                    height = Dimension.value(100.dp)
                 }
 
+                constrain(redBox){
+                    top.linkTo(parent.top)
+                    start.linkTo(blueBox.end)
+                    end.linkTo(parent.end)
+                    width = Dimension.value(100.dp)
+                    height = Dimension.value(100.dp)
+                }
 
-//                items(5000){
-//                    Text(
-//                        text = "Item $it",
-//                        fontSize = 24.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        textAlign = TextAlign.Center,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(vertical = 24.dp)
-//
-//                    )
-//                }
+                createHorizontalChain(blueBox, redBox, chainStyle = ChainStyle.Packed)
 
             }
+
+            ConstraintLayout(constraints, modifier = Modifier.fillMaxSize() ){
+                Box(modifier = Modifier.background(Color.Blue).layoutId("bluebox"))
+                Box(modifier = Modifier.background(Color.Red).layoutId("redBox"))
+            }
+
+
 
         }
     }

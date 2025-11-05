@@ -65,6 +65,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import com.example.jetpackcomposecrashcourse.ui.theme.JetPackComposeCrashCourseTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -73,36 +74,12 @@ import kotlin.random.Random
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val constraints = ConstraintSet{
-                val blueBox = createRefFor("bluebox")
-                val redBox = createRefFor("redBox")
-                val guideLine = createGuidelineFromTop(0.5f)
+            var text by remember { mutableStateOf("") }
 
-                constrain(blueBox){
-                    top.linkTo(guideLine)
-                    start.linkTo(parent.start)
-                    width = Dimension.value(100.dp)
-                    height = Dimension.value(100.dp)
-                }
-
-                constrain(redBox){
-                    top.linkTo(parent.top)
-                    start.linkTo(blueBox.end)
-                    end.linkTo(parent.end)
-                    width = Dimension.value(100.dp)
-                    height = Dimension.value(100.dp)
-                }
-
-                createHorizontalChain(blueBox, redBox, chainStyle = ChainStyle.Packed)
-
+            LaunchedEffect(key1 = text) {
+                delay(1000L)
+                println("The text is $text")
             }
-
-            ConstraintLayout(constraints, modifier = Modifier.fillMaxSize() ){
-                Box(modifier = Modifier.background(Color.Blue).layoutId("bluebox"))
-                Box(modifier = Modifier.background(Color.Red).layoutId("redBox"))
-            }
-
-
 
         }
     }
